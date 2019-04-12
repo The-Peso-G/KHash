@@ -1,5 +1,8 @@
 kotlin.sourceSets {
     commonTest.dependencies {
-        api project(":khash-extensions")
+        api "org.komputing:khex-extensions-common:1.0.0-RC1"
+    }
+    jvmTest.dependencies {
+        api "org.komputing:khex-extensions-jvm:1.0.0-RC1"
     }
 }

@@ -1,9 +1,9 @@
 package org.komputing.khash.keccak
 
-import org.komputing.khash.extensions.hexToByteArray
-import org.komputing.khash.extensions.toHexString
-import org.komputing.khash.extensions.toNoPrefixHexString
 import org.komputing.khash.keccak.extensions.digestKeccak
+import org.komputing.khex.extensions.hexToByteArray
+import org.komputing.khex.extensions.toHexString
+import org.komputing.khex.extensions.toNoPrefixHexString
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue

@@ -1,8 +1,8 @@
 package org.komputing.khash.ripemd160
 
-import org.komputing.khash.extensions.hexToByteArray
 import org.komputing.khash.ripemd160.Ripemd160Digest
 import org.komputing.khash.ripemd160.extensions.digestRipemd160
+import org.komputing.khex.extensions.hexToByteArray
 import kotlin.test.Test
 import kotlin.test.assertTrue
 

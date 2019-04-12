@@ -1,4 +1,4 @@
-[![](https://jitpack.io/v/komputing/KHash.svg)](https://jitpack.io/#komputing/KHash)
+[![](https://jitpack.io/v/walleth/sha3.svg)](https://jitpack.io/#walleth/sha3)
 
 # KHash
 
@@ -16,9 +16,8 @@ The implemented hashing functions are the following.
 
 ## Supported platforms
 | Module | Supported platforms |
-| :------- | :-------: |
-| `keccak` | `common`, `jvm`, `js`, `native` | 
-| `khash-extensions` | `common`, `jvm` | 
+| :------- | :-------- |
+| `keccak` | `common`, `jvm` (due to the usage of KBigNumbers) | 
 | `ripemd160` | `common`, `jvm`, `js`, `native` |
 | `sha256` | `common`, `jvm`, `js`, `native` |
 
@@ -33,23 +32,6 @@ I was using the implementation from [spongycastle](https://rtyley.github.io/spon
 
 # How
 ## Usage
-### `extensions`
-Module containing all the useful extension functions that are commonly used while dealing with cryptocurrencies.
-```kotlin
-// Convert a single Byte to its HEX representation
-1.toByte().toHexString()  
-
-// Convert a ByteArray into its HEX representation, with a prefix
-byteArrayOf(1, 2, 3).toHexString(prefix = "0x")
-
-// Convert a ByteArray into its HEX representation, without any prefix
-byteArrayOf(1, 2, 3).toNoPrefixHexString()
-
-// Convert a HEX string into it's byte representation
-"0f56e912a00c".hexToByteArray()
-```
-
-
 ### `keccak`
 Module containing the implementation of the Kecccak hashing algorithms.  
 
@@ -94,7 +76,7 @@ byteArrayOf(1, 2, 3).ripemd160()
 ```
 
 ### `sha256`
-Module containing the implementation of the SHA256 hashing algorithms.  
+Module containing the implementation of the RIPEMD160 hashing algorithms.  
 
 #### Object usage
 ```kotlin
@@ -112,6 +94,7 @@ byteArrayOf(1, 2, 3).sha256()
 ```
 
 # Disclaimer
+### About the Keccak module
 The results *should* be correct as the Nist test vectors pass and also second degree tests pass in KEthereum. That said there should be more eyes on this project before it is used in really critical situations. If you can spare some time please have a look at the code - feedback is very welcome.
 
 Also this code is not hardened against side channel attacks. Keep this in mind when hashing sensitive content! I would be really happy about input from security researchers here - there is also an [open issue](https://github.com/walleth/sha3/issues/5) with a bounty for this.
@@ -123,7 +106,7 @@ Also this code is not hardened against side channel attacks. Keep this in mind w
 
 # Projects using this library
  * [WallETH - Android Ethereum Wallet](https://walleth.org)
- * [KEthereum - Kotlin Ethereum library](https://github.com/komputing/KEthereum)
+ * [KEthereum - Kotlin Ethereum library](https://github.com/walleth/kethereum)
 
 # License
 MIT
