@@ -1,7 +1,5 @@
 package org.komputing.khash.sha256.extensions
 
-import io.mockk.every
-import io.mockk.mockkObject
 import org.komputing.khash.sha256.Sha256
 import kotlin.test.Test
 import kotlin.test.assertTrue
@@ -37,12 +35,8 @@ class ByteArrayExtensionsTests {
     }
 
     @Test
-    fun sha256CallsProperMethod() = mockkObject(Sha256) {
-        val output = byteArrayOf(3, 2, 1)
-        every { Sha256.digest(any()) } returns output
-
+    fun sha256CallsProperMethod() {
         val input = byteArrayOf(1, 2, 3)
-        val result = input.sha256()
-        assertTrue(output.contentEquals(result))
+        assertTrue(Sha256.digest(input).contentEquals(input.sha256()))
     }
 }

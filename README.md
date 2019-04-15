@@ -12,14 +12,14 @@ The implemented hashing functions are the following.
 * [SHA-256](https://en.wikipedia.org/wiki/SHA-2) 
 * [Keccak](https://en.wikipedia.org/wiki/SHA-3)
    - Heavily based on this java implementation: [@romus/sha](https://github.com/romus/sha)
-   - Tested with [Nist test vectors](https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Algorithm-Validation-Program/documents/sha3/sha-3bittestvectors.zip)
+   - Tested with [Nist test vectors](ht tps://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Algorithm-Validation-Program/documents/sha3/sha-3bittestvectors.zip)
 
 ## Supported platforms
-| Module | Supported platforms |
-| :------- | :-------- |
-| `keccak` | `common`, `jvm` (due to the usage of KBigNumbers) | 
-| `ripemd160` | `common`, `jvm`, `js`, `native` |
-| `sha256` | `common`, `jvm`, `js`, `native` |
+| Module | Supported platforms | Missing platforms reason |
+| :------- | :-------- | :----------------------------- |
+| `keccak` | `common`, `jvm` | `native` and `js` are missing due to the usage of KBigNumbers | 
+| `ripemd160` | `common`, `jvm` | `native` and `js` are missing due to the usage of KHex |
+| `sha256` | `common`, `jvm`, `js`, `native` | --- |
 
 Any Pull Request implementing the missing platforms is more than welcome! 
 

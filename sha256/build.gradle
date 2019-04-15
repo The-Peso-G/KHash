@@ -3,10 +3,19 @@ apply plugin: 'kotlinx-serialization'
 kotlin.sourceSets {
     commonMain.dependencies {
     }
+//    jsMain.dependencies {
+//        api "org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:$serialization_version"
+//    }
     commonTest.dependencies {
         api "org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serialization_version"
     }
+    posixTest.dependencies {
+        api "org.jetbrains.kotlinx:kotlinx-serialization-runtime-native:$serialization_version"
+    }
     jvmTest.dependencies {
         api "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serialization_version"
+    }
+    jsTest.dependencies {
+        api "org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:$serialization_version"
     }
 }

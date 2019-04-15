@@ -13,6 +13,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.21.0'
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokka_version"
+        classpath "com.moowork.gradle:gradle-node-plugin:$gradle_node_version"
         classpath "org.jlleitschuh.gradle:ktlint-gradle:$ktlint_gradle_version"
         classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
     }
@@ -24,17 +25,30 @@ ext.publishLocal = project.hasProperty("publishLocal")
 
 apply from: "gradle/experimental.gradle"
 
-def platforms = ["common", "jvm"]
+def platforms = [
+        "keccak": ["common", "jvm"],
+        "ripemd160": ["common", "jvm"],
+        "sha256": ["common", "jvm", "js", "darwin", "posix"]
+]
 def projectNeedsPlatform(project, platform) {
     def files = project.projectDir.listFiles()
+    def hasPosix = files.any { it.name == "posix" }
+    def hasDarwin = files.any { it.name == "darwin" }
+
+    if (hasPosix && hasDarwin) return false
+
+    if (hasPosix && platform == "darwin") return false
+    if (hasDarwin && platform == "posix") return false
+    if (!hasPosix && !hasDarwin && platform == "darwin") return false
+
     return files.any { it.name == "common" || it.name == platform }
 }
 
 allprojects {
-    group = "org.komputing"
+    group = "org.komputing.khash"
     version = configuredVersion
     project.ext.hostManager = new HostManager()
-    
+
     repositories {
         jcenter()
         mavenLocal()
@@ -43,14 +57,17 @@ allprojects {
     }
 
     apply plugin: "kotlin-multiplatform"
+    apply from: rootProject.file("gradle/utility.gradle")
 
-    platforms.each { platform ->
-        if (projectNeedsPlatform(project, platform)) {
-            configure([it]) {
-                apply from: rootProject.file("gradle/${platform}.gradle")
+    platforms.findAll { platformEntry -> platformEntry.key == project.name }
+            .collect { it.value }.flatten()
+            .each { platform ->
+                if (projectNeedsPlatform(project, platform)) {
+                    configure([it]) {
+                        apply from: rootProject.file("gradle/${platform}.gradle")
+                    }
+                }
             }
-        }
-    }
 
     apply from: rootProject.file('gradle/dokka.gradle')
     apply from: rootProject.file('gradle/publish.gradle')

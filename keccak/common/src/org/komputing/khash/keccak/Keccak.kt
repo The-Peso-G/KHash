@@ -1,6 +1,6 @@
 package org.komputing.khash.keccak
 
-import kbignumbers.biginteger.BigInteger
+import org.komputing.kbignumbers.biginteger.BigInteger
 import org.komputing.khash.keccak.extensions.fillWith
 import kotlin.math.min
 

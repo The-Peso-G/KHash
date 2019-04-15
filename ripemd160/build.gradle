@@ -1,8 +1,14 @@
 kotlin.sourceSets {
     commonTest.dependencies {
-        api "org.komputing:khex-extensions-common:1.0.0-RC1"
+        // TODO: Change this to use Jitpack
+        api "org.komputing.khex:extensions-common:$khex_version"
     }
     jvmTest.dependencies {
-        api "org.komputing:khex-extensions-jvm:1.0.0-RC1"
+        // TODO: Change this to use Jitpack
+        api "org.komputing.khex:extensions-jvm:$khex_version"
+    }
+    posixTest.dependencies {
+        // TODO: Change this to use Jitpack
+        api "org.komputing.khex:extensions-native:$khex_version"
     }
 }

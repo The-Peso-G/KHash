@@ -12,6 +12,11 @@ import org.komputing.khash.sha256.extensions.toIntArray
  */
 object Sha256 {
 
+    private const val BLOCK_BITS = 512
+    private const val BLOCK_BYTES = BLOCK_BITS / 8
+
+    private const val H_SIZE = 8
+
     private val K = intArrayOf(
         0x428a2f98, 0x71374491, -0x4a3f0431, -0x164a245b, 0x3956c25b, 0x59f111f1, -0x6dc07d5c, -0x54e3a12b,
         -0x27f85568, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, -0x7f214e02, -0x6423f959, -0x3e640e8c,
@@ -28,10 +33,7 @@ object Sha256 {
         0x510e527f, -0x64fa9774, 0x1f83d9ab, 0x5be0cd19
     )
 
-    // Working arrays
-    private val W = IntArray(64)
-    private val H = IntArray(8)
-    private val TEMP = IntArray(8)
+
 
     /**
      * Hashes the given message with SHA-256 and returns the digest.
@@ -40,9 +42,12 @@ object Sha256 {
      * @return The digest's bytes.
      */
     fun digest(message: ByteArray): ByteArray {
+        // Working arrays
+        val w = IntArray(64)
+        val temp = IntArray(H_SIZE)
+
         // Let H = H0
-        H0.copy(0,
-            H, 0, H0.size)
+        val h = H0.copyOf(H_SIZE)
 
         // Initialize all words
         val words = padMessage(message).toIntArray()
@@ -53,44 +58,30 @@ object Sha256 {
         while (i < n) {
 
             // initialize W from the block's words
-            words.copy(i * 16, W, 0, 16)
-            for (t in 16 until W.size) {
-                W[t] = (smallSig1(W[t - 2]) + W[t - 7] + smallSig0(
-                    W[t - 15]
-                ) + W[t - 16])
+            words.copy(i * 16, w, 0, 16)
+            for (t in 16 until w.size) {
+                w[t] = (smallSig1(w[t - 2]) + w[t - 7] + smallSig0(w[t - 15]) + w[t - 16])
             }
 
             // Let TEMP = H
-            H.copy(0,
-                TEMP, 0, H.size)
+            h.copy(0, temp, 0, h.size)
 
             // Operate on TEMP
-            for (t in W.indices) {
-                val t1 = (TEMP[7] + bigSig1(TEMP[4]) + ch(
-                    TEMP[4],
-                    TEMP[5],
-                    TEMP[6]
-                ) + K[t] + W[t])
-                val t2 = bigSig0(TEMP[0]) + maj(
-                    TEMP[0],
-                    TEMP[1],
-                    TEMP[2]
-                )
-                TEMP.copy(0,
-                    TEMP, 1, TEMP.size - 1)
-                TEMP[4] += t1
-                TEMP[0] = t1 + t2
+            w.forEachIndexed { t, _ ->
+                val t1 = (temp[7] + bigSig1(temp[4]) + ch(temp[4], temp[5], temp[6]) + K[t] + w[t])
+                val t2 = bigSig0(temp[0]) + maj(temp[0], temp[1], temp[2])
+                temp.copy(0, temp, 1, temp.size - 1)
+                temp[4] += t1
+                temp[0] = t1 + t2
             }
 
             // Add values in TEMP to values in H
-            for (t in H.indices) {
-                H[t] += TEMP[t]
-            }
+            h.forEachIndexed { t, _ -> h[t] += temp[t] }
 
             ++i
         }
 
-        return H.toByteArray()
+        return h.toByteArray()
     }
 
     /**
@@ -102,12 +93,9 @@ object Sha256 {
      * @return A new array with the padded message bytes.
      */
     internal fun padMessage(message: ByteArray): ByteArray {
-        val blockBits = 512
-        val blockBytes = blockBits / 8
-
         // new message length: original + 1-bit and padding + 8-byte length
         var newMessageLength = message.size + 1 + 8
-        val padBytes = blockBytes - newMessageLength % blockBytes
+        val padBytes = BLOCK_BYTES - newMessageLength % BLOCK_BYTES
         newMessageLength += padBytes
 
         // copy message to extended array
