@@ -45,7 +45,7 @@ def projectNeedsPlatform(project, platform) {
 }
 
 allprojects {
-    group = "com.github.komputing.KHash"
+    group = "com.github.komputing.khash"
     version = configuredVersion
     project.ext.hostManager = new HostManager()
 
