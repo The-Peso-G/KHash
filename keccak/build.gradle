@@ -1,9 +1,14 @@
 kotlin.sourceSets {
     commonMain.dependencies {
-        api project(":extensions")
-        api "org.kbignumbers:kbignumbers:$kbignumbers_version"
+        api "com.github.komputing.kbignumbers:biginteger-common:$kbignumbers_version"
+    }
+    commonTest.dependencies {
+        api "com.github.komputing.khex:extensions-common:$khex_version"
     }
     jvmMain.dependencies {
-        api "org.kbignumbers:kbignumbers-jvm:$kbignumbers_version"
+        api "com.github.komputing.kbignumbers:biginteger-jvm:$kbignumbers_version"
+    }
+    jvmTest.dependencies {
+        api "com.github.komputing.khex:extensions-jvm:$khex_version"
     }
 }
